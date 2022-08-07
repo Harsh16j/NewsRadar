@@ -4,19 +4,19 @@ import Card from 'react-bootstrap/Card';
 
 export class NewsItem extends Component {
   render() {
-    let {title, description}=this.props;
+    let {title, description, imageURL, newsURL}=this.props;
+    console.log(typeof description)
     return (
-      <div>
+      <div className="my-3">
         <Card style={{ width: '18rem' }}>
-      <Card.Img variant="top" src="holder.js/100px180" />
+      <Card.Img variant="top" src={imageURL} style={{ width:'100%',
+    height:'200px'}}/>
       <Card.Body>
-        <Card.Title>Card Title {title}</Card.Title>
+        <Card.Title>{title.slice(0,45)}</Card.Title>
         <Card.Text>
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content
-          {description}
+          {description==null?"---":description.slice(0,88)}
         </Card.Text>
-        <Button variant="primary">Go somewhere</Button>
+        <Button variant="primary" size="sm" href={newsURL} target="_blank">Read more</Button>
       </Card.Body>
     </Card>
       </div>
