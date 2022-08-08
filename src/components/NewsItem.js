@@ -7,7 +7,7 @@ export class NewsItem extends Component {
     let { title, description, imageURL, newsURL } = this.props;
     return (
       <div className="my-3">
-        <Card style={{ width: "18rem" }}>
+        <Card>
           <Card.Img
             variant="top"
             src={imageURL?imageURL:"https://thumbs.dreamstime.com/b/news-newspapers-folded-stacked-word-wooden-block-puzzle-dice-concept-newspaper-media-press-release-42301371.jpg"}

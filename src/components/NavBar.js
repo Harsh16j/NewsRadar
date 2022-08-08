@@ -15,6 +15,13 @@ export default class NavBar extends Component {
           <Nav className="me-auto">
             <Nav.Link href="#home">Home</Nav.Link>
             <Nav.Link href="#link">About</Nav.Link> 
+            <Nav.Link href="#link">business</Nav.Link> 
+            <Nav.Link href="#link">entertainment</Nav.Link> 
+            <Nav.Link href="#link">general</Nav.Link> 
+            <Nav.Link href="#link">health</Nav.Link> 
+            <Nav.Link href="#link">science</Nav.Link> 
+            <Nav.Link href="#link">sports</Nav.Link> 
+            <Nav.Link href="#link">technology</Nav.Link> 
           </Nav>
         </Navbar.Collapse>
       {/* </Container> */}
