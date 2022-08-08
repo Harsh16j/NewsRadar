@@ -10,7 +10,7 @@ export class NewsItem extends Component {
         <Card style={{ width: "18rem" }}>
           <Card.Img
             variant="top"
-            src={imageURL}
+            src={imageURL?imageURL:"https://thumbs.dreamstime.com/b/news-newspapers-folded-stacked-word-wooden-block-puzzle-dice-concept-newspaper-media-press-release-42301371.jpg"}
             style={{ width: "100%", height: "200px" }}
           />
           {/* To fix the size of the image w.r.t. the cards */}
