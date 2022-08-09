@@ -9,14 +9,21 @@ import Spinner from "./Spinner";
 import PropTypes from "prop-types";
 
 export class News extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       articles: [],
       loading: false,
       page: 1,
     };
+    this.capitalizedCategory =
+      this.props.category === "general"
+        ? ""
+        : this.props.category.charAt(0).toUpperCase() +
+          this.props.category.slice(1) +
+          "-";
+    document.title = `${this.capitalizedCategory}NewsMonkey`;
   }
   static defaulProps = {
     country: "in",
@@ -28,7 +35,6 @@ export class News extends Component {
     pageSize: PropTypes.number,
     category: PropTypes.string,
   };
-
   async updateNews(page_change) {
     this.setState({ loading: true });
     let url = `https://newsapi.org/v2/top-headlines?country=${
@@ -40,7 +46,7 @@ export class News extends Component {
     }&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
     let parsedData = await data.json();
-    console.log(parsedData)
+    console.log(parsedData);
     this.setState({
       articles: parsedData.articles,
       totalResults: parsedData.totalResults,
@@ -64,7 +70,8 @@ export class News extends Component {
 
     return (
       <div className="container">
-        <h2 className="text-center my-3">News Monkey - Top Headlines</h2>
+        <h2 className="text-center my-3">
+          Top {this.props.category.charAt(0).toUpperCase()+this.props.category.slice(1)} Headlines</h2>
         {this.state.loading && <Spinner />}
         <Container>
           <Row className="my-3">
