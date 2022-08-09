@@ -6,7 +6,7 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import { keyboard } from "@testing-library/user-event/dist/keyboard";
 import Spinner from "./Spinner";
-import PropTypes from 'prop-types'
+import PropTypes from "prop-types";
 
 export class News extends Component {
   constructor() {
@@ -18,58 +18,46 @@ export class News extends Component {
       page: 1,
     };
   }
-  static defaulProps={
-    country:'in',
-    pageSize:8,
-    category:"general"
-  }
-  static propTypes={
+  static defaulProps = {
+    country: "in",
+    pageSize: 8,
+    category: "general",
+  };
+  static propTypes = {
     country: PropTypes.string,
-    pageSize:PropTypes.number,
-    category:PropTypes.string
-  }
-  
+    pageSize: PropTypes.number,
+    category: PropTypes.string,
+  };
 
-  handleNextClick = async () => {
+  async updateNews(page_change) {
     this.setState({ loading: true });
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=dc4f86ebe3ef4491ab0610eac28369a6&page=${
-      this.state.page + 1
+    let url = `https://newsapi.org/v2/top-headlines?country=${
+      this.props.country
+    }&category=${
+      this.props.category
+    }&apiKey=dc4f86ebe3ef4491ab0610eac28369a6&page=${
+      this.state.page + page_change
     }&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
     let parsedData = await data.json();
+    console.log(parsedData)
     this.setState({
       articles: parsedData.articles,
-      page: this.state.page + 1,
       totalResults: parsedData.totalResults,
       loading: false,
+      page: this.state.page + page_change,
     });
+  }
+  async componentDidMount() {
+    this.updateNews(0);
+  }
+  handleNextClick = async () => {
+    this.updateNews(1);
   };
   handlePrevClick = async () => {
-    this.setState({ loading: true });
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=dc4f86ebe3ef4491ab0610eac28369a6&page=${
-      this.state.page - 1
-    }&pageSize=${this.props.pageSize}`;
-    let data = await fetch(url);
-    let parsedData = await data.json();
-    this.setState({
-      articles: parsedData.articles,
-      page: this.state.page - 1,
-      totalResults: parsedData.totalResults,
-      loading: false,
-    });
+    this.updateNews(-1);
   };
-  async componentDidMount() {
-    this.setState({ loading: true });
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=dc4f86ebe3ef4491ab0610eac28369a6&pageSize=${this.props.pageSize}`;
-    let data = await fetch(url);
-    let parsedData = await data.json();
 
-    this.setState({
-      articles: parsedData.articles,
-      totalResults: parsedData.totalResults,
-      loading: false,
-    });
-  }
   render() {
     let span = 4;
     let offset = 0; //offset not needed
