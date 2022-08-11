@@ -23,7 +23,7 @@ export class NewsItem extends Component {
           />
           {/* To fix the size of the image w.r.t. the cards */}
           <Card.Body>
-            <Card.Title>{title.slice(0, 45)}</Card.Title>
+            <Card.Title>{title?title.slice(0, 45):" "}</Card.Title>
             <Card.Text>
               {description == null ? "---" : description.slice(0, 88)}
             </Card.Text>

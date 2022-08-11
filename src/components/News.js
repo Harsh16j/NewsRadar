@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import { keyboard } from "@testing-library/user-event/dist/keyboard";
 import Spinner from "./Spinner";
 import PropTypes from "prop-types";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export class News extends Component {
   constructor(props) {
@@ -14,8 +15,10 @@ export class News extends Component {
 
     this.state = {
       articles: [],
-      loading: false,
+      loading: true,
       page: 1,
+      totalResults: 0,
+      newPageLength:1
     };
     this.capitalizedCategory =
       this.props.category === "general"
@@ -36,7 +39,7 @@ export class News extends Component {
     category: PropTypes.string,
   };
   async updateNews(page_change) {
-    this.setState({ loading: true });
+    // this.setState({ loading: true });
     let url = `https://newsapi.org/v2/top-headlines?country=${
       this.props.country
     }&category=${
@@ -57,26 +60,61 @@ export class News extends Component {
   async componentDidMount() {
     this.updateNews(0);
   }
-  handleNextClick = async () => {
-    this.updateNews(1);
+
+  fetchMoreData = async() => {
+    let url = `https://newsapi.org/v2/top-headlines?country=${
+      this.props.country
+    }&category=${
+      this.props.category
+    }&apiKey=dc4f86ebe3ef4491ab0610eac28369a6&page=${
+      this.state.page + 1
+    }&pageSize=${this.props.pageSize}`;
+    let data = await fetch(url);
+    let parsedData = await data.json();
+    console.log(parsedData);
+    this.setState({
+      articles: this.state.articles.concat(parsedData.articles),
+      totalResults: parsedData.totalResults,
+      loading: false,
+      page: this.state.page + 1,
+      newPageLength:parsedData.articles.length
+    });
+    
   };
-  handlePrevClick = async () => {
-    this.updateNews(-1);
-  };
+
+  // handleNextClick = async () => {
+  //   this.updateNews(1);
+  // };
+  // handlePrevClick = async () => {
+  //   this.updateNews(-1);
+  // };
 
   render() {
     let span = 4;
     let offset = 0; //offset not needed
 
     return (
-      <div className="container">
+      <>
         <h2 className="text-center my-3">
-          Top {this.props.category.charAt(0).toUpperCase()+this.props.category.slice(1)} Headlines</h2>
+          Top{" "}
+          {this.props.category.charAt(0).toUpperCase() +
+            this.props.category.slice(1)}{" "}
+          Headlines
+        </h2>
         {this.state.loading && <Spinner />}
-        <Container>
-          <Row className="my-3">
-            {!this.state.loading &&
-              this.state.articles.map((element) => {
+        
+          <InfiniteScroll
+            dataLength={this.state.articles.length}
+            next={this.fetchMoreData}
+            hasMore={this.state.articles.length != this.state.totalResults && this.state.newPageLength} 
+            // this.state.newPageLength is used because sometimes the total results in the news api pages are more 
+            //than actual number of pages, which is the error is the NEWS api API
+            loader={<Spinner />}
+          >
+            <div className="container">
+            <Container>
+            <Row className="my-3">
+              {this.state.articles.map((element) => {
                 return (
                   <Col key={element.url} md={{ span: span, offset: offset }}>
                     {/* // url will be unique and can be used as a key */}
@@ -92,9 +130,12 @@ export class News extends Component {
                   </Col>
                 );
               })}
-          </Row>
-        </Container>
-        <div className="d-flex justify-content-between my-3">
+            </Row>
+            </Container>
+            </div>
+          </InfiniteScroll>
+        
+        {/* <div className="d-flex justify-content-between my-3">
           <Button
             variant="primary"
             disabled={this.state.page <= 1}
@@ -111,8 +152,8 @@ export class News extends Component {
           >
             Next &rarr;
           </Button>
-        </div>
-      </div>
+        </div> */}
+        </>
     );
   }
 }
