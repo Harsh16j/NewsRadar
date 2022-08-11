@@ -40,6 +40,7 @@ export class News extends Component {
   };
   async updateNews(page_change) {
     // this.setState({ loading: true });
+    this.props.setProgress(10);
     let url = `https://newsapi.org/v2/top-headlines?country=${
       this.props.country
     }&category=${
@@ -48,7 +49,9 @@ export class News extends Component {
       this.state.page + page_change
     }&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
+    this.props.setProgress(30);
     let parsedData = await data.json();
+    this.props.setProgress(70);
     console.log(parsedData);
     this.setState({
       articles: parsedData.articles,
@@ -56,6 +59,7 @@ export class News extends Component {
       loading: false,
       page: this.state.page + page_change,
     });
+    this.props.setProgress(100);
   }
   async componentDidMount() {
     this.updateNews(0);
