@@ -60,7 +60,7 @@ export default function News(props) {
   };
   return (
     <>
-      <h2 className="text-center my-3">
+      <h2 className="text-center" style={{marginTop:"70px", marginBottom:"-10px"}}>
         Top {props.category.charAt(0).toUpperCase() + props.category.slice(1)}{" "}
         Headlines
       </h2>
