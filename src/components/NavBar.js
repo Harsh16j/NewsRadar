@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export default function NavBar() {
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="light" expand="lg" fixed="top">
       {/* <Container style={{ width: "100%" }}> - No need as it centers the navbar*/}
       <Navbar.Brand href="#home">NewsMonkey</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
