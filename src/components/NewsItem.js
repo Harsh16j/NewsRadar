@@ -28,9 +28,9 @@ export default function NewsItem(props) {
         />
         {/* To fix the size of the image w.r.t. the cards */}
         <Card.Body>
-          <Card.Title>{title ? title.slice(0, 45) : " "}</Card.Title>
+          <Card.Title>{title ? title : " "}</Card.Title>
           <Card.Text>
-            {description == null ? "---" : description.slice(0, 88)}
+            {description == null ? "---" : description.slice(0, 100)+ (description.length>100?"...":"")}
           </Card.Text>
           <p className="text-muted">
             By {author ? author : "Unknown"} on {new Date(date).toGMTString()}

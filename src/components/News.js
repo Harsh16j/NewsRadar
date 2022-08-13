@@ -3,8 +3,6 @@ import NewsItem from "./NewsItem";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
-import { keyboard } from "@testing-library/user-event/dist/keyboard";
 import Spinner from "./Spinner";
 import PropTypes from "prop-types";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -20,7 +18,7 @@ export default function News(props) {
   let offset = 0; //offset not needed
 
   const capitalizedCategory = props.category === "general"? "": props.category.charAt(0).toUpperCase() + props.category.slice(1) + "-";
-  // document.title = `${capitalizedCategory}NewsMonkey`;
+  
 
   const updateNews = async (page_change) => {
     props.setProgress(10);
@@ -42,6 +40,8 @@ export default function News(props) {
   };
   useEffect(() => {
     updateNews(0);
+    /* eslint-disable */
+    document.title = `${capitalizedCategory}NewsMonkey`;
   }, []);
   const fetchMoreData = async () => {
     let url = `https://newsapi.org/v2/top-headlines?country=${
@@ -69,7 +69,7 @@ export default function News(props) {
       <InfiniteScroll
         dataLength={articles.length}
         next={fetchMoreData}
-        hasMore={articles.length != totalResults && newPageLength}
+        hasMore={articles.length !== totalResults && newPageLength}
         // newPageLength is used because sometimes the total results in the news api pages are more
         //than actual number of pages, which is the error is the NEWS api API
         loader={<Spinner />}
