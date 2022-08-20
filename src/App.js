@@ -8,7 +8,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoadingBar from "react-top-loading-bar";
 
 export default function App() {
-  let APIKey = process.env.REACT_APP_NEWS_API;
+  let APIKey = process.env.REACT_APP_NEWS_API;  //paste your API key in APIKey variable
+  //Get you API Key from https://newsapi.org/
+  //APIKey imported from .env.local file which is in .gitignore
   let pageSize = 12;
 
   const [progress, setProgress] = useState(0);
