@@ -14,8 +14,8 @@ export default function News(props) {
     const [totalResults, setTotalResults] = useState(0);
     const [newPageLength, setNewPageLength] = useState(1);
 
-    let span = 4;
-    let offset = 0; //offset not needed
+    // let span = 4;
+    // let offset = 0; //offset not needed
 
     const capitalizedCategory =
         props.category === "general"
@@ -85,15 +85,18 @@ export default function News(props) {
             >
                 <div className="container">
                     <Container>
-                        <Row className="my-3">
+                        <Row className="g-4 py-4">
                             {articles.map((element) => {
                                 return (
                                     <Col
                                         key={element.url}
-                                        md={{
-                                            span: span,
-                                            offset: offset,
-                                        }}
+                                        // md={{
+                                        //     span: span,
+                                        //     offset: offset,
+                                        // }}
+
+                                        md={6}
+                                        lg={4}
                                     >
                                         {/* // url will be unique and can be used as a key */}
                                         <NewsItem
