@@ -1,10 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "react-bootstrap/Card";
 
 export default function NewsItem(props) {
     let { title, description, imageURL, newsURL, author, date, source } = props;
+    const [focus, setFocus] = useState(false);
     return (
-        <Card className="h-100">
+        <Card
+            className="h-100"
+            style={{
+                cursor: "pointer",
+                backgroundColor: "#EDEDED",
+                borderStyle: "solid",
+                borderColor: `${focus ? "inherit" : "white"}`,
+                borderWidth: "2px",
+                borderRadius: "10px",
+            }}
+            onClick={() => {
+                window.open(newsURL, "_blank");
+            }}
+            onMouseEnter={() => {
+                setFocus(true);
+            }}
+            onMouseLeave={() => {
+                setFocus(false);
+            }}
+        >
             <div
                 style={{
                     display: "flex",
@@ -44,7 +64,7 @@ export default function NewsItem(props) {
                     {new Date(date).toGMTString()}
                 </p>
 
-                <a
+                {/* <a
                     // variant="outline-primary"
                     size="sm"
                     href={newsURL}
@@ -56,13 +76,11 @@ export default function NewsItem(props) {
                         backgroundColor: "inherit",
                         color: "blue",
                         fontSize: "18px",
-                        display: "flex",
-                        alignItems: "flex-start",
                         textDecoration: "none",
                     }}
                 >
                     Read more
-                </a>
+                </a> */}
             </div>
         </Card>
     );
