@@ -6,6 +6,7 @@ import Col from "react-bootstrap/Col";
 import Spinner from "./Spinner";
 import PropTypes from "prop-types";
 import InfiniteScroll from "react-infinite-scroll-component";
+import noResultsImage from "../images/no results image.jpg";
 
 export default function News(props) {
     const [articles, setArticles] = useState([]);
@@ -13,6 +14,7 @@ export default function News(props) {
     const [page, setPage] = useState(1);
     const [totalResults, setTotalResults] = useState(0);
     const [newPageLength, setNewPageLength] = useState(1);
+    const [isFetching, setIsFetching] = useState(true);
 
     // let span = 4;
     // let offset = 0; //offset not needed
@@ -31,6 +33,7 @@ export default function News(props) {
         }&category=${props.category}&apiKey=${props.APIKey}&page=${
             page + page_change
         }&pageSize=${props.pageSize}`;
+        url = props.query === "" ? url : `${url}&q=${props.query}`;
         let data = await fetch(url);
         props.setProgress(30);
         let parsedData = await data.json();
@@ -41,12 +44,18 @@ export default function News(props) {
         setLoading(false);
         setPage(page + page_change);
         props.setProgress(100);
+
+        setIsFetching(false);
     };
     useEffect(() => {
-        updateNews(0);
+        props.setQuery("");
         /* eslint-disable */
         document.title = `${capitalizedCategory}NewsRadar`;
     }, []);
+    useEffect(() => {
+        updateNews(0);
+    }, [props.query]);
+
     const fetchMoreData = async () => {
         let url = `https://newsapi.org/v2/top-headlines?country=${
             props.country
@@ -64,57 +73,101 @@ export default function News(props) {
     };
     return (
         <>
-            <h2
-                className="text-center"
-                style={{ marginTop: "70px", marginBottom: "-10px" }}
-            >
-                Top{" "}
-                {props.category.charAt(0).toUpperCase() +
-                    props.category.slice(1)}{" "}
-                Headlines
-            </h2>
-            {loading && <Spinner />}
+            {!isFetching && articles.length === 0 ? (
+                <>
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: "100%",
+                        }}
+                    >
+                        <div>
+                            <div>
+                                <img
+                                    src={noResultsImage}
+                                    height={250}
+                                    width={500}
+                                />
+                            </div>
 
-            <InfiniteScroll
-                dataLength={articles.length}
-                next={fetchMoreData}
-                hasMore={articles.length !== totalResults && newPageLength}
-                // newPageLength is used because sometimes the total results in the news api pages are more
-                //than actual number of pages, which is the error is the NEWS api API
-                loader={<Spinner />}
-            >
-                <div className="container">
-                    <Container>
-                        <Row className="g-4 py-4">
-                            {articles.map((element) => {
-                                return (
-                                    <Col
-                                        key={element.url}
-                                        // md={{
-                                        //     span: span,
-                                        //     offset: offset,
-                                        // }}
+                            <div
+                                className="sorryNoResults"
+                                style={{
+                                    textAlign: "center",
+                                    fontSize: "20px",
+                                }}
+                            >
+                                Sorry, no results found!
+                            </div>
+                            <div
+                                className="searchElse"
+                                style={{ textAlign: "center" }}
+                            >
+                                Please check the spelling or try searching for
+                                something else
+                            </div>
+                        </div>
+                    </div>
+                </>
+            ) : (
+                <>
+                    <h2 className="text-center">
+                        Top{" "}
+                        {props.category.charAt(0).toUpperCase() +
+                            props.category.slice(1)}{" "}
+                        Headlines
+                    </h2>
+                    {loading && <Spinner />}
+                    <InfiniteScroll
+                        dataLength={articles.length}
+                        next={fetchMoreData}
+                        hasMore={
+                            articles.length !== totalResults && newPageLength
+                        }
+                        // newPageLength is used because sometimes the total results in the news api pages are more
+                        //than actual number of pages, which is the error is the NEWS api API
+                        loader={<Spinner />}
+                    >
+                        <div className="container">
+                            <Container>
+                                <Row className="g-4 py-4">
+                                    {articles.map((element) => {
+                                        return (
+                                            <Col
+                                                key={element.url}
+                                                // md={{
+                                                //     span: span,
+                                                //     offset: offset,
+                                                // }}
 
-                                        md={6}
-                                        lg={4}
-                                    >
-                                        {/* // url will be unique and can be used as a key */}
-                                        <NewsItem
-                                            title={element.title}
-                                            description={element.description}
-                                            imageURL={element.urlToImage}
-                                            newsURL={element.url}
-                                            author={element.author}
-                                            date={element.publishedAt}
-                                            source={element.source.name}
-                                        />
-                                    </Col>
-                                );
-                            })}
-                        </Row>
-                    </Container>
-                </div>
-            </InfiniteScroll>
+                                                md={6} // medium devices - 6columns per element (12/6=2 i.e. only 2 cards per row)
+                                                lg={4} // large devices - 12/4=3 i.e. 3 cards per row
+                                            >
+                                                {/* // url will be unique and can be used as a key */}
+                                                <NewsItem
+                                                    title={element.title}
+                                                    description={
+                                                        element.description
+                                                    }
+                                                    imageURL={
+                                                        element.urlToImage
+                                                    }
+                                                    newsURL={element.url}
+                                                    author={element.author}
+                                                    date={element.publishedAt}
+                                                    source={element.source.name}
+                                                />
+                                            </Col>
+                                        );
+                                    })}
+                                </Row>
+                            </Container>
+                        </div>
+                    </InfiniteScroll>
+                </>
+            )}
         </>
     );
 }

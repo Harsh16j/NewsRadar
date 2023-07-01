@@ -7,12 +7,13 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import "./navbar.css";
 
-export default function NavBar() {
+export default function NavBar({ query, setQuery }) {
     return (
         <Navbar
             expand="lg"
             className="bg-body-tertiary"
-            fixed="top"
+            sticky="top"
+            // fixed="top"
             style={{ backgroundColor: "#00898A" }}
             // bg="#00898A"
             data-bs-theme="dark"
@@ -61,6 +62,10 @@ export default function NavBar() {
                             placeholder="Search"
                             className="me-2"
                             aria-label="Search"
+                            value={query}
+                            onChange={(e) => {
+                                setQuery(e.target.value);
+                            }}
                         />
                     </Form>
                 </Navbar.Collapse>

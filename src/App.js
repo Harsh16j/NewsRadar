@@ -11,13 +11,14 @@ export default function App() {
     let APIKey = process.env.REACT_APP_NEWS_API; //paste your API key in APIKey variable
     //Get you API Key from https://newsapi.org/
     //APIKey imported from .env.local file which is in .gitignore
-    let pageSize = 12;
+    let pageSize = 12; // number of results to be fetched per search query
 
     const [progress, setProgress] = useState(0);
+    const [query, setQuery] = useState("");
 
     return (
         <Router>
-            <NavBar />
+            <NavBar query={query} setQuery={setQuery} />
 
             <LoadingBar color="#f11946" progress={progress} height={3} />
 
@@ -33,6 +34,8 @@ export default function App() {
                             pageSize={pageSize}
                             country="in"
                             category="business"
+                            query={query}
+                            setQuery={setQuery}
                         />
                     }
                 />
@@ -47,6 +50,8 @@ export default function App() {
                             pageSize={pageSize}
                             country="in"
                             category="entertainment"
+                            query={query}
+                            setQuery={setQuery}
                         />
                     }
                 />
@@ -61,6 +66,8 @@ export default function App() {
                             pageSize={pageSize}
                             country="in"
                             category="general"
+                            query={query}
+                            setQuery={setQuery}
                         />
                     }
                 />
@@ -75,6 +82,8 @@ export default function App() {
                             pageSize={pageSize}
                             country="in"
                             category="health"
+                            query={query}
+                            setQuery={setQuery}
                         />
                     }
                 />
@@ -89,6 +98,8 @@ export default function App() {
                             pageSize={pageSize}
                             country="in"
                             category="science"
+                            query={query}
+                            setQuery={setQuery}
                         />
                     }
                 />
@@ -103,6 +114,8 @@ export default function App() {
                             pageSize={pageSize}
                             country="in"
                             category="sports"
+                            query={query}
+                            setQuery={setQuery}
                         />
                     }
                 />
@@ -117,6 +130,8 @@ export default function App() {
                             pageSize={pageSize}
                             country="in"
                             category="technology"
+                            query={query}
+                            setQuery={setQuery}
                         />
                     }
                 />
