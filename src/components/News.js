@@ -15,7 +15,8 @@ export default function News(props) {
     const [totalResults, setTotalResults] = useState(0);
     const [newPageLength, setNewPageLength] = useState(1);
     const [isFetching, setIsFetching] = useState(true);
-
+    const { debouncedSearchQuery } = props;
+    const [firstRun, setFirstRun] = useState(true);
     // let span = 4;
     // let offset = 0; //offset not needed
 
@@ -33,7 +34,10 @@ export default function News(props) {
         }&category=${props.category}&apiKey=${props.APIKey}&page=${
             page + page_change
         }&pageSize=${props.pageSize}`;
-        url = props.query === "" ? url : `${url}&q=${props.query}`;
+        url =
+            debouncedSearchQuery === ""
+                ? url
+                : `${url}&q=${debouncedSearchQuery}`;
         let data = await fetch(url);
         props.setProgress(30);
         let parsedData = await data.json();
@@ -48,13 +52,25 @@ export default function News(props) {
         setIsFetching(false);
     };
     useEffect(() => {
-        props.setQuery("");
+        console.log("reloaded");
         /* eslint-disable */
         document.title = `${capitalizedCategory}NewsRadar`;
+
+        return () => {
+            if (props.query.length !== 0) {
+                props.setQuery("");
+                console.log("leaving");
+            }
+        };
     }, []);
     useEffect(() => {
-        updateNews(0);
-    }, [props.query]);
+        if (!(firstRun && debouncedSearchQuery.length !== 0)) {
+            console.log("debounced:", debouncedSearchQuery);
+            updateNews(0);
+        }
+        setFirstRun(false);
+        console.log("debounced:", debouncedSearchQuery);
+    }, [debouncedSearchQuery]);
 
     const fetchMoreData = async () => {
         let url = `https://newsapi.org/v2/top-headlines?country=${
@@ -62,6 +78,10 @@ export default function News(props) {
         }&category=${props.category}&apiKey=${props.APIKey}&page=${
             page + 1
         }&pageSize=${props.pageSize}`;
+        url =
+            debouncedSearchQuery === ""
+                ? url
+                : `${url}&q=${debouncedSearchQuery}`;
         let data = await fetch(url);
         let parsedData = await data.json();
         console.log(parsedData);
@@ -81,6 +101,7 @@ export default function News(props) {
                             justifyContent: "center",
                             alignItems: "center",
                             height: "100%",
+                            marginTop: "100px",
                         }}
                     >
                         <div>
@@ -97,6 +118,7 @@ export default function News(props) {
                                 style={{
                                     textAlign: "center",
                                     fontSize: "20px",
+                                    marginTop: "15px",
                                 }}
                             >
                                 Sorry, no results found!

@@ -6,6 +6,7 @@ import NavBar from "./components/NavBar";
 import News from "./components/News";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoadingBar from "react-top-loading-bar";
+import useDebounce from "./hooks/useDebounce";
 
 export default function App() {
     let APIKey = process.env.REACT_APP_NEWS_API; //paste your API key in APIKey variable
@@ -15,6 +16,7 @@ export default function App() {
 
     const [progress, setProgress] = useState(0);
     const [query, setQuery] = useState("");
+    const debouncedSearchQuery = useDebounce(query, 1000);
 
     return (
         <Router>
@@ -36,6 +38,7 @@ export default function App() {
                             category="business"
                             query={query}
                             setQuery={setQuery}
+                            debouncedSearchQuery={debouncedSearchQuery}
                         />
                     }
                 />
@@ -52,6 +55,7 @@ export default function App() {
                             category="entertainment"
                             query={query}
                             setQuery={setQuery}
+                            debouncedSearchQuery={debouncedSearchQuery}
                         />
                     }
                 />
@@ -68,6 +72,7 @@ export default function App() {
                             category="general"
                             query={query}
                             setQuery={setQuery}
+                            debouncedSearchQuery={debouncedSearchQuery}
                         />
                     }
                 />
@@ -84,6 +89,7 @@ export default function App() {
                             category="health"
                             query={query}
                             setQuery={setQuery}
+                            debouncedSearchQuery={debouncedSearchQuery}
                         />
                     }
                 />
@@ -100,6 +106,7 @@ export default function App() {
                             category="science"
                             query={query}
                             setQuery={setQuery}
+                            debouncedSearchQuery={debouncedSearchQuery}
                         />
                     }
                 />
@@ -116,6 +123,7 @@ export default function App() {
                             category="sports"
                             query={query}
                             setQuery={setQuery}
+                            debouncedSearchQuery={debouncedSearchQuery}
                         />
                     }
                 />
@@ -132,6 +140,7 @@ export default function App() {
                             category="technology"
                             query={query}
                             setQuery={setQuery}
+                            debouncedSearchQuery={debouncedSearchQuery}
                         />
                     }
                 />

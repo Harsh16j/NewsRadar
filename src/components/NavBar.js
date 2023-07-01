@@ -4,7 +4,6 @@ import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import "./navbar.css";
 
 export default function NavBar({ query, setQuery }) {
