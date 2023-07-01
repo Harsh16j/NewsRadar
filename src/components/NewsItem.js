@@ -9,9 +9,12 @@ export default function NewsItem(props) {
             className="h-100"
             style={{
                 cursor: "pointer",
-                backgroundColor: "#EDEDED",
+                // backgroundColor: "#EDEDED",
+                boxShadow: `${
+                    focus ? "2px 3px 5px rgba(0, 0, 0, .2)" : "none"
+                }`,
                 borderStyle: "solid",
-                borderColor: `${focus ? "inherit" : "white"}`,
+                borderColor: `${focus ? "#B7B8BA" : "#EDEFF0"}`,
                 borderWidth: "2px",
                 borderRadius: "10px",
             }}
