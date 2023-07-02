@@ -48,6 +48,7 @@ body,
 body {
     padding-top: 56px;
     /* 56px is the height of the bootstrap navbar */
+    /* How to work around with the fixed navbar: https://www.youtube.com/watch?v=5zDYchk3C5k&ab_channel=ByteGradTips */
 }
 .app-title {
     /* App name on navbar */

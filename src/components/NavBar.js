@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Dropdown from "react-bootstrap/Dropdown";
+import newsLogo from "../news_logo_2.png";
 
 export default function NavBar({
     query,
@@ -28,6 +29,15 @@ export default function NavBar({
             {/* <Container style={{ width: "100%" }}> - No need as it centers the navbar*/}
             <Container fluid>
                 <Navbar.Brand className="app-title">
+                    <img
+                        src={newsLogo}
+                        alt=""
+                        style={{
+                            height: "40px",
+                            width: "40px",
+                            marginRight: "5px",
+                        }}
+                    />
                     {/* <Link to="/" className="nav-link"> */}
                     NewsRadar
                     {/* </Link> */}

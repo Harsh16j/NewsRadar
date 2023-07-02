@@ -23,10 +23,9 @@ export default function News(props) {
     const capitalizedCategory =
         props.category === "general"
             ? ""
-            : props.category.charAt(0).toUpperCase() +
-              props.category.slice(1) +
-              "-";
-
+            : "-" +
+              props.category.charAt(0).toUpperCase() +
+              props.category.slice(1);
     const updateNews = async (page_change) => {
         props.setProgress(10);
         let url = `https://newsapi.org/v2/top-headlines?country=${
@@ -88,7 +87,7 @@ export default function News(props) {
 
     useEffect(() => {
         /* eslint-disable */
-        document.title = `${capitalizedCategory}NewsRadar`;
+        document.title = `NewsRadar${capitalizedCategory}`;
 
         return () => {
             if (props.query.length !== 0) {
