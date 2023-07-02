@@ -37,6 +37,20 @@
     }
 }
 
-h2 {
+html,
+body,
+#root {
+    /* Display flex helped with the bottom div only occupying the remaining 100% */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+body {
+    padding-top: 56px;
+    /* 56px is the height of the bootstrap navbar */
+}
+
+.text-center {
     font-family: Postoni, BodoniSvtyTwoITCTT-Book, georgia, serif;
+    padding-top: 15px; /* To not keep the heading stuck with the top */
 }

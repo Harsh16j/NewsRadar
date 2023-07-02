@@ -11,8 +11,8 @@ export default function NavBar({ query, setQuery }) {
         <Navbar
             expand="lg"
             className="bg-body-tertiary"
-            sticky="top"
-            // fixed="top"
+            // sticky="top"
+            fixed="top"
             style={{ backgroundColor: "#00898A" }}
             // bg="#00898A"
             data-bs-theme="dark"

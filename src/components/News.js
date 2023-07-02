@@ -65,6 +65,7 @@ export default function News(props) {
     }, []);
     useEffect(() => {
         if (!(firstRun && debouncedSearchQuery.length !== 0)) {
+            // When the component will be mounted with the demounted search query from the previous news category component
             console.log("debounced:", debouncedSearchQuery);
             updateNews(0);
         }
@@ -101,7 +102,6 @@ export default function News(props) {
                             justifyContent: "center",
                             alignItems: "center",
                             height: "100%",
-                            marginTop: "100px",
                         }}
                     >
                         <div>
