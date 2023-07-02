@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ErrorMessage from "./ErrorMessage";
 import NewsItem from "./NewsItem";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -6,7 +7,6 @@ import Col from "react-bootstrap/Col";
 import Spinner from "./Spinner";
 import PropTypes from "prop-types";
 import InfiniteScroll from "react-infinite-scroll-component";
-import noResultsImage from "../images/no results image.jpg";
 
 export default function News(props) {
     const [articles, setArticles] = useState([]);
@@ -14,7 +14,7 @@ export default function News(props) {
     const [page, setPage] = useState(1);
     const [totalResults, setTotalResults] = useState(0);
     const [newPageLength, setNewPageLength] = useState(1);
-    const [isFetching, setIsFetching] = useState(true);
+    // const [isFetching, setIsFetching] = useState(true);
     const { debouncedSearchQuery } = props;
     const [firstRun, setFirstRun] = useState(true);
     // let span = 4;
@@ -38,39 +38,71 @@ export default function News(props) {
             debouncedSearchQuery === ""
                 ? url
                 : `${url}&q=${debouncedSearchQuery}`;
-        let data = await fetch(url);
-        props.setProgress(30);
-        let parsedData = await data.json();
-        props.setProgress(70);
-        console.log(parsedData);
-        setArticles(parsedData.articles);
-        setTotalResults(parsedData.totalResults);
-        setLoading(false);
-        setPage(page + page_change);
-        props.setProgress(100);
 
-        setIsFetching(false);
+        try {
+            let data = await fetch(url);
+
+            if (data.status !== 200) {
+                props.setErrorData({
+                    error: "An unexpected error occured, please try again later",
+                    message: "",
+                });
+            } else {
+                props.setProgress(30);
+                let parsedData = await data.json();
+
+                if (parsedData.status === "error") {
+                    props.setErrorData({
+                        error: "API limit exceeded, please try again later",
+                        message: `Error message:${parsedData.message}`,
+                    });
+                } else {
+                    props.setProgress(70);
+
+                    setArticles(parsedData.articles);
+                    setTotalResults(parsedData.totalResults);
+                    setLoading(false);
+                    setPage(page + page_change);
+                    props.setProgress(100);
+
+                    if (parsedData.articles.length === 0) {
+                        props.setErrorData({
+                            error: "Sorry, no results found!",
+                            message: `Please check the spelling or try searching for something else`,
+                        });
+                    } else if (Object.keys(props.errorData).length !== 0) {
+                        // if the error has been resolved, old error value will be reset to empty object (no error)
+                        props.setErrorData({});
+                    }
+                }
+            }
+        } catch (err) {
+            props.setErrorData({
+                error: "Connection Error!!!",
+                message: `Check your internet connection and try again`,
+            });
+        }
+        // setIsFetching(false);
+        props.setProgress(100);
     };
+
     useEffect(() => {
-        console.log("reloaded");
         /* eslint-disable */
         document.title = `${capitalizedCategory}NewsRadar`;
 
         return () => {
             if (props.query.length !== 0) {
                 props.setQuery("");
-                console.log("leaving");
             }
         };
     }, []);
     useEffect(() => {
         if (!(firstRun && debouncedSearchQuery.length !== 0)) {
             // When the component will be mounted with the demounted search query from the previous news category component
-            console.log("debounced:", debouncedSearchQuery);
+
             updateNews(0);
         }
         setFirstRun(false);
-        console.log("debounced:", debouncedSearchQuery);
     }, [debouncedSearchQuery]);
 
     const fetchMoreData = async () => {
@@ -83,56 +115,50 @@ export default function News(props) {
             debouncedSearchQuery === ""
                 ? url
                 : `${url}&q=${debouncedSearchQuery}`;
-        let data = await fetch(url);
-        let parsedData = await data.json();
-        console.log(parsedData);
-        setArticles(articles.concat(parsedData.articles));
-        setTotalResults(parsedData.totalResults);
-        setLoading(false);
-        setPage(page + 1);
-        setNewPageLength(parsedData.articles.length);
+        try {
+            let data = await fetch(url);
+            if (data.status !== 200) {
+                props.setErrorData({
+                    error: "An unexpected error occured, please try again later",
+                    message: "",
+                });
+            } else {
+                let parsedData = await data.json();
+                if (parsedData.status === "error") {
+                    props.setErrorData({
+                        error: "API limit exceeded, please try again later",
+                        message: `Error message:${parsedData.message}`,
+                    });
+                } else {
+                    setArticles(articles.concat(parsedData.articles));
+                    setTotalResults(parsedData.totalResults);
+                    setLoading(false);
+                    setPage(page + 1);
+                    setNewPageLength(parsedData.articles.length);
+                }
+            }
+        } catch (err) {
+            props.setErrorData({
+                error: "Connection Error!!!",
+                message: `Check your internet connection and try again`,
+            });
+        }
     };
     return (
         <>
-            {!isFetching && articles.length === 0 ? (
+            {/* {!isFetching && articles.length === 0 ? (
                 <>
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            height: "100%",
+                    <ErrorMessage
+                        errorMessage={{
+                            error: "Sorry, no results found!",
+                            message:
+                                "Please check the spelling or try searching for something else",
                         }}
-                    >
-                        <div>
-                            <div>
-                                <img
-                                    src={noResultsImage}
-                                    height={250}
-                                    width={500}
-                                />
-                            </div>
-
-                            <div
-                                className="sorryNoResults"
-                                style={{
-                                    textAlign: "center",
-                                    fontSize: "20px",
-                                    marginTop: "15px",
-                                }}
-                            >
-                                Sorry, no results found!
-                            </div>
-                            <div
-                                className="searchElse"
-                                style={{ textAlign: "center" }}
-                            >
-                                Please check the spelling or try searching for
-                                something else
-                            </div>
-                        </div>
-                    </div>
+                    />
                 </>
+            ) */}
+            {Object.keys(props.errorData).length !== 0 ? (
+                <ErrorMessage errorData={props.errorData} />
             ) : (
                 <>
                     <h2 className="text-center">

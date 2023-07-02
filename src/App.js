@@ -18,6 +18,8 @@ export default function App() {
     const [query, setQuery] = useState("");
     const debouncedSearchQuery = useDebounce(query, 1000);
 
+    const [errorData, setErrorData] = useState({});
+
     return (
         <Router>
             <NavBar query={query} setQuery={setQuery} />
@@ -39,6 +41,8 @@ export default function App() {
                             query={query}
                             setQuery={setQuery}
                             debouncedSearchQuery={debouncedSearchQuery}
+                            errorData={errorData}
+                            setErrorData={setErrorData}
                         />
                     }
                 />
@@ -56,6 +60,8 @@ export default function App() {
                             query={query}
                             setQuery={setQuery}
                             debouncedSearchQuery={debouncedSearchQuery}
+                            errorData={errorData}
+                            setErrorData={setErrorData}
                         />
                     }
                 />
@@ -73,6 +79,8 @@ export default function App() {
                             query={query}
                             setQuery={setQuery}
                             debouncedSearchQuery={debouncedSearchQuery}
+                            errorData={errorData}
+                            setErrorData={setErrorData}
                         />
                     }
                 />
@@ -90,6 +98,8 @@ export default function App() {
                             query={query}
                             setQuery={setQuery}
                             debouncedSearchQuery={debouncedSearchQuery}
+                            errorData={errorData}
+                            setErrorData={setErrorData}
                         />
                     }
                 />
@@ -107,6 +117,8 @@ export default function App() {
                             query={query}
                             setQuery={setQuery}
                             debouncedSearchQuery={debouncedSearchQuery}
+                            errorData={errorData}
+                            setErrorData={setErrorData}
                         />
                     }
                 />
@@ -124,6 +136,8 @@ export default function App() {
                             query={query}
                             setQuery={setQuery}
                             debouncedSearchQuery={debouncedSearchQuery}
+                            errorData={errorData}
+                            setErrorData={setErrorData}
                         />
                     }
                 />
@@ -141,6 +155,8 @@ export default function App() {
                             query={query}
                             setQuery={setQuery}
                             debouncedSearchQuery={debouncedSearchQuery}
+                            errorData={errorData}
+                            setErrorData={setErrorData}
                         />
                     }
                 />
