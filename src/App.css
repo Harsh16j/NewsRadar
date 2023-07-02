@@ -54,6 +54,9 @@ body {
     color: white !important;
     font-family: Postoni, BodoniSvtyTwoITCTT-Book, georgia, serif;
 }
+.nav-link {
+    color: white !important;
+}
 .text-center {
     font-family: Postoni, BodoniSvtyTwoITCTT-Book, georgia, serif;
     padding-top: 15px; /* To not keep the heading stuck with the top */

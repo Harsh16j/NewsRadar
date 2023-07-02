@@ -22,9 +22,9 @@ export default function App() {
     const [errorData, setErrorData] = useState({});
 
     const categories = [
+        "general",
         "business",
         "entertainment",
-        "general",
         "health",
         "science",
         "sports",
@@ -70,6 +70,7 @@ export default function App() {
             <NavBar
                 query={query}
                 setQuery={setQuery}
+                categories={categories}
                 countries={countries}
                 countryCodes={countryCodes}
                 selectedCountryIndex={selectedCountryIndex}

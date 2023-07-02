@@ -4,13 +4,12 @@ import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
-import "./navbar.css";
 import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
 
 export default function NavBar({
     query,
     setQuery,
+    categories,
     countries,
     countryCodes,
     selectedCountryIndex,
@@ -42,27 +41,23 @@ export default function NavBar({
                     >
                         {/* <Nav.Link href="/home">Home</Nav.Link>
           <Nav.Link href="/link">About </Nav.Link> */}
-                        <Link className="nav-link" to="/">
-                            General
-                        </Link>
-                        <Link className="nav-link" to="/business">
-                            Business
-                        </Link>
-                        <Link className="nav-link" to="/entertainment">
-                            Entertainment
-                        </Link>
-                        <Link className="nav-link" to="/health">
-                            Health
-                        </Link>
-                        <Link className="nav-link" to="/science">
-                            Science
-                        </Link>
-                        <Link className="nav-link" to="/sports">
-                            Sports
-                        </Link>
-                        <Link className="nav-link" to="/technology">
-                            Technology
-                        </Link>
+                        {/* In place of the above tag from bootstrap, nav-link is used as the classname to inherit all the CSS properties from bootstrap */}
+                        {categories.map((category) => {
+                            return (
+                                <Link
+                                    className="nav-link"
+                                    key={category}
+                                    to={
+                                        category === "general"
+                                            ? "/"
+                                            : `/${category}`
+                                    }
+                                >
+                                    {category.charAt(0).toUpperCase() +
+                                        category.slice(1)}
+                                </Link>
+                            );
+                        })}
                     </Nav>
                     <Form className="d-flex">
                         <Form.Control
@@ -111,10 +106,6 @@ export default function NavBar({
                                         </Dropdown.Item>
                                     );
                                 })}
-                                {/* <Dropdown.Item>Action</Dropdown.Item>
-                            <Dropdown.Item>Another action</Dropdown.Item>
-                            <Dropdown.Item>Something else</Dropdown.Item>
-                            <Dropdown.Item>Separated link</Dropdown.Item> */}
                             </Dropdown.Menu>
                         </Dropdown>
                     </Form>

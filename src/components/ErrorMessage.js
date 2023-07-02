@@ -13,7 +13,12 @@ const ErrorMessage = ({ errorData: { error, message } }) => {
         >
             <div>
                 <div>
-                    <img src={noResultsImage} height={250} width={500} />
+                    <img
+                        src={noResultsImage}
+                        height={250}
+                        width={500}
+                        alt="Error"
+                    />
                 </div>
 
                 <div
