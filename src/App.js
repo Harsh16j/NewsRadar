@@ -20,6 +20,15 @@ export default function App() {
 
     const [errorData, setErrorData] = useState({});
 
+    let categories = [
+        "business",
+        "entertainment",
+        "general",
+        "health",
+        "science",
+        "sports",
+        "technology",
+    ];
     return (
         <Router>
             <NavBar query={query} setQuery={setQuery} />
@@ -27,139 +36,30 @@ export default function App() {
             <LoadingBar color="#f11946" progress={progress} height={3} />
 
             <Routes>
-                <Route
-                    exact
-                    path="/business"
-                    element={
-                        <News
-                            APIKey={APIKey}
-                            setProgress={setProgress}
-                            key="business"
-                            pageSize={pageSize}
-                            country="in"
-                            category="business"
-                            query={query}
-                            setQuery={setQuery}
-                            debouncedSearchQuery={debouncedSearchQuery}
-                            errorData={errorData}
-                            setErrorData={setErrorData}
+                {categories.map((category) => {
+                    return (
+                        <Route
+                            exact
+                            key={category}
+                            path={`/${category === "general" ? "/" : category}`}
+                            element={
+                                <News
+                                    APIKey={APIKey}
+                                    setProgress={setProgress}
+                                    key={category}
+                                    pageSize={pageSize}
+                                    country="in"
+                                    category={category}
+                                    query={query}
+                                    setQuery={setQuery}
+                                    debouncedSearchQuery={debouncedSearchQuery}
+                                    errorData={errorData}
+                                    setErrorData={setErrorData}
+                                />
+                            }
                         />
-                    }
-                />
-                <Route
-                    exact
-                    path="/entertainment"
-                    element={
-                        <News
-                            APIKey={APIKey}
-                            setProgress={setProgress}
-                            key="entertainment"
-                            pageSize={pageSize}
-                            country="in"
-                            category="entertainment"
-                            query={query}
-                            setQuery={setQuery}
-                            debouncedSearchQuery={debouncedSearchQuery}
-                            errorData={errorData}
-                            setErrorData={setErrorData}
-                        />
-                    }
-                />
-                <Route
-                    exact
-                    path="/"
-                    element={
-                        <News
-                            APIKey={APIKey}
-                            setProgress={setProgress}
-                            key="general"
-                            pageSize={pageSize}
-                            country="in"
-                            category="general"
-                            query={query}
-                            setQuery={setQuery}
-                            debouncedSearchQuery={debouncedSearchQuery}
-                            errorData={errorData}
-                            setErrorData={setErrorData}
-                        />
-                    }
-                />
-                <Route
-                    exact
-                    path="/health"
-                    element={
-                        <News
-                            APIKey={APIKey}
-                            setProgress={setProgress}
-                            key="health"
-                            pageSize={pageSize}
-                            country="in"
-                            category="health"
-                            query={query}
-                            setQuery={setQuery}
-                            debouncedSearchQuery={debouncedSearchQuery}
-                            errorData={errorData}
-                            setErrorData={setErrorData}
-                        />
-                    }
-                />
-                <Route
-                    exact
-                    path="/science"
-                    element={
-                        <News
-                            APIKey={APIKey}
-                            setProgress={setProgress}
-                            key="science"
-                            pageSize={pageSize}
-                            country="in"
-                            category="science"
-                            query={query}
-                            setQuery={setQuery}
-                            debouncedSearchQuery={debouncedSearchQuery}
-                            errorData={errorData}
-                            setErrorData={setErrorData}
-                        />
-                    }
-                />
-                <Route
-                    exact
-                    path="/sports"
-                    element={
-                        <News
-                            APIKey={APIKey}
-                            setProgress={setProgress}
-                            key="sports"
-                            pageSize={pageSize}
-                            country="in"
-                            category="sports"
-                            query={query}
-                            setQuery={setQuery}
-                            debouncedSearchQuery={debouncedSearchQuery}
-                            errorData={errorData}
-                            setErrorData={setErrorData}
-                        />
-                    }
-                />
-                <Route
-                    exact
-                    path="/technology"
-                    element={
-                        <News
-                            APIKey={APIKey}
-                            setProgress={setProgress}
-                            key="technology"
-                            pageSize={pageSize}
-                            country="in"
-                            category="technology"
-                            query={query}
-                            setQuery={setQuery}
-                            debouncedSearchQuery={debouncedSearchQuery}
-                            errorData={errorData}
-                            setErrorData={setErrorData}
-                        />
-                    }
-                />
+                    );
+                })}
             </Routes>
         </Router>
     );
