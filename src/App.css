@@ -49,8 +49,23 @@ body {
     padding-top: 56px;
     /* 56px is the height of the bootstrap navbar */
 }
-
+.app-title {
+    /* App name on navbar */
+    color: white !important;
+    font-family: Postoni, BodoniSvtyTwoITCTT-Book, georgia, serif;
+}
 .text-center {
     font-family: Postoni, BodoniSvtyTwoITCTT-Book, georgia, serif;
     padding-top: 15px; /* To not keep the heading stuck with the top */
+}
+
+.btn-secondary:focus {
+    /* For stopping the button boundary from coming in: https://stackoverflow.com/questions/19053181/how-to-remove-focus-around-buttons-on-click */
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.countriesList:active {
+    --bs-dropdown-link-active-bg: #00898a;
+    /* This property was found from chrome dev tools */
 }

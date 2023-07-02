@@ -10,6 +10,7 @@ export default function NewsItem(props) {
             style={{
                 cursor: "pointer",
                 // backgroundColor: "#EDEDED",
+                // Shadow tutorial: https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow
                 boxShadow: `${
                     focus ? "2px 3px 5px rgba(0, 0, 0, .2)" : "none"
                 }`,

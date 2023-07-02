@@ -103,7 +103,7 @@ export default function News(props) {
             updateNews(0);
         }
         setFirstRun(false);
-    }, [debouncedSearchQuery]);
+    }, [debouncedSearchQuery, props.country]);
 
     const fetchMoreData = async () => {
         let url = `https://newsapi.org/v2/top-headlines?country=${

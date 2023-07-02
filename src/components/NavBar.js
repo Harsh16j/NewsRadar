@@ -5,8 +5,17 @@ import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import "./navbar.css";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 
-export default function NavBar({ query, setQuery }) {
+export default function NavBar({
+    query,
+    setQuery,
+    countries,
+    countryCodes,
+    selectedCountryIndex,
+    setSelectedCountryIndex,
+}) {
     return (
         <Navbar
             expand="lg"
@@ -19,10 +28,10 @@ export default function NavBar({ query, setQuery }) {
         >
             {/* <Container style={{ width: "100%" }}> - No need as it centers the navbar*/}
             <Container fluid>
-                <Navbar.Brand>
-                    <Link to="/" className="nav-link">
-                        NewsRadar
-                    </Link>
+                <Navbar.Brand className="app-title">
+                    {/* <Link to="/" className="nav-link"> */}
+                    NewsRadar
+                    {/* </Link> */}
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
@@ -66,6 +75,48 @@ export default function NavBar({ query, setQuery }) {
                                 setQuery(e.target.value);
                             }}
                         />
+                        <Dropdown align="end" className="dropdown-btn">
+                            <Dropdown.Toggle
+                                id="dropdown-button-dark-example1"
+                                variant="secondary"
+                                style={{
+                                    backgroundColor: "#00898A",
+                                    color: "white",
+                                    borderColor: "black",
+                                }}
+                            >
+                                {countries[selectedCountryIndex]}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu
+                                style={{
+                                    marginTop: "8px", // 8px is the exact gap between selectCountry box and navbar bottom edge
+                                    height: "300px",
+                                    overflowY: "auto",
+                                }}
+                            >
+                                {countries.map((country, index) => {
+                                    if (index === selectedCountryIndex) {
+                                        return <span key={country}></span>;
+                                    }
+                                    return (
+                                        <Dropdown.Item
+                                            key={country}
+                                            className="countriesList"
+                                            onClick={() => {
+                                                setSelectedCountryIndex(index);
+                                            }}
+                                        >
+                                            {country}
+                                        </Dropdown.Item>
+                                    );
+                                })}
+                                {/* <Dropdown.Item>Action</Dropdown.Item>
+                            <Dropdown.Item>Another action</Dropdown.Item>
+                            <Dropdown.Item>Something else</Dropdown.Item>
+                            <Dropdown.Item>Separated link</Dropdown.Item> */}
+                            </Dropdown.Menu>
+                        </Dropdown>
                     </Form>
                 </Navbar.Collapse>
                 {/* </Container> */}

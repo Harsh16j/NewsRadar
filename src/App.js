@@ -17,10 +17,11 @@ export default function App() {
     const [progress, setProgress] = useState(0);
     const [query, setQuery] = useState("");
     const debouncedSearchQuery = useDebounce(query, 1000);
+    const [selectedCountryIndex, setSelectedCountryIndex] = useState(0);
 
     const [errorData, setErrorData] = useState({});
 
-    let categories = [
+    const categories = [
         "business",
         "entertainment",
         "general",
@@ -29,9 +30,51 @@ export default function App() {
         "sports",
         "technology",
     ];
+
+    const countries = [
+        "United States",
+        "United Kingdom",
+        "Germany",
+        "France",
+        "Italy",
+        "Canada",
+        "Australia",
+        "China",
+        "Japan",
+        "India",
+        "Brazil",
+        "Russia",
+        "Mexico",
+        "South Africa",
+        "Egypt",
+    ];
+    const countryCodes = [
+        "US",
+        "GB",
+        "DE",
+        "FR",
+        "IT",
+        "CA",
+        "AU",
+        "CN",
+        "JP",
+        "IN",
+        "BR",
+        "RU",
+        "MX",
+        "ZA",
+        "EG",
+    ];
     return (
         <Router>
-            <NavBar query={query} setQuery={setQuery} />
+            <NavBar
+                query={query}
+                setQuery={setQuery}
+                countries={countries}
+                countryCodes={countryCodes}
+                selectedCountryIndex={selectedCountryIndex}
+                setSelectedCountryIndex={setSelectedCountryIndex}
+            />
 
             <LoadingBar color="#f11946" progress={progress} height={3} />
 
@@ -48,7 +91,7 @@ export default function App() {
                                     setProgress={setProgress}
                                     key={category}
                                     pageSize={pageSize}
-                                    country="in"
+                                    country={countryCodes[selectedCountryIndex]}
                                     category={category}
                                     query={query}
                                     setQuery={setQuery}
