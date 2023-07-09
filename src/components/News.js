@@ -26,7 +26,7 @@ export default function News(props) {
             : "-" +
               props.category.charAt(0).toUpperCase() +
               props.category.slice(1);
-    const updateNews = async (page_change) => {
+    const updateNews = async () => {
         props.setProgress(10);
         let url = `https://newsapi.org/v2/top-headlines?country=${
             props.country
