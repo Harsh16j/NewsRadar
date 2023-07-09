@@ -30,9 +30,9 @@ export default function News(props) {
         props.setProgress(10);
         let url = `https://newsapi.org/v2/top-headlines?country=${
             props.country
-        }&category=${props.category}&apiKey=${props.APIKey}&page=${
-            page + 1
-        }&pageSize=${props.pageSize}`;
+        }&category=${props.category}&apiKey=${
+            props.APIKey
+        }&page=${1}&pageSize=${props.pageSize}`;
         url =
             debouncedSearchQuery === ""
                 ? url
@@ -61,7 +61,7 @@ export default function News(props) {
                     setArticles(parsedData.articles);
                     setTotalResults(parsedData.totalResults);
                     setLoading(false);
-                    setPage(page + 1);
+                    setPage(1);
                     props.setProgress(100);
 
                     if (parsedData.articles.length === 0) {
@@ -114,6 +114,7 @@ export default function News(props) {
             debouncedSearchQuery === ""
                 ? url
                 : `${url}&q=${debouncedSearchQuery}`;
+
         try {
             let data = await fetch(url);
             if (data.status !== 200) {
