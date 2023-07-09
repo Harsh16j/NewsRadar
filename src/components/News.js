@@ -11,7 +11,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 export default function News(props) {
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
     const [totalResults, setTotalResults] = useState(0);
     const [newPageLength, setNewPageLength] = useState(1);
     // const [isFetching, setIsFetching] = useState(true);
@@ -31,7 +31,7 @@ export default function News(props) {
         let url = `https://newsapi.org/v2/top-headlines?country=${
             props.country
         }&category=${props.category}&apiKey=${props.APIKey}&page=${
-            page + page_change
+            page + 1
         }&pageSize=${props.pageSize}`;
         url =
             debouncedSearchQuery === ""
@@ -61,7 +61,7 @@ export default function News(props) {
                     setArticles(parsedData.articles);
                     setTotalResults(parsedData.totalResults);
                     setLoading(false);
-                    setPage(page + page_change);
+                    setPage(page + 1);
                     props.setProgress(100);
 
                     if (parsedData.articles.length === 0) {
@@ -99,7 +99,7 @@ export default function News(props) {
         if (!(firstRun && debouncedSearchQuery.length !== 0)) {
             // When the component will be mounted with the demounted search query from the previous news category component
 
-            updateNews(0);
+            updateNews();
         }
         setFirstRun(false);
     }, [debouncedSearchQuery, props.country]);
