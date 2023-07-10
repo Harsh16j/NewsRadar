@@ -56,7 +56,7 @@ export default function NavBar({
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav
                         className="me-auto my-2 my-lg-0"
-                        style={{ maxHeight: "100px" }}
+                        style={{ maxHeight: "200px" }}
                         navbarScroll
                     >
                         {/* <Nav.Link href="/home">Home</Nav.Link>
