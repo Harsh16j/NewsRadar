@@ -17,7 +17,7 @@ export default function NavBar({
     setSelectedCountryIndex,
 }) {
     const [expanded, setExpanded] = useState(false);
-    const [isCollapsed, setIsCollapsed] = useState(true);
+
     return (
         <Navbar
             expand="lg"
