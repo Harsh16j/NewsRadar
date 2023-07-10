@@ -28,51 +28,63 @@ export default function News(props) {
               props.category.slice(1);
     const updateNews = async () => {
         props.setProgress(10);
-        let url = `https://newsapi.org/v2/top-headlines?country=${
-            props.country
-        }&category=${props.category}&apiKey=${
-            props.APIKey
-        }&page=${1}&pageSize=${props.pageSize}`;
-        url =
-            debouncedSearchQuery === ""
-                ? url
-                : `${url}&q=${debouncedSearchQuery}`;
 
+        const url = "http://localhost:5000/api/v1/news/fetchnews";
+        const body = {
+            category: props.category,
+            country: props.country,
+            APIKey: props.APIKey,
+            page: 1,
+            pageSize: props.pageSize,
+        };
+        if (debouncedSearchQuery.length !== 0) {
+            body.searchQuery = debouncedSearchQuery;
+        }
         try {
-            let data = await fetch(url);
+            const data = await fetch(url, {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(body),
+            });
 
+            props.setProgress(30);
+
+            const parsedData = await data.json();
+
+            // if error
             if (data.status !== 200) {
-                props.setErrorData({
-                    error: "An unexpected error occured, please try again later",
-                    message: "",
-                });
-            } else {
-                props.setProgress(30);
-                let parsedData = await data.json();
-
-                if (parsedData.status === "error") {
+                if (parsedData.error) {
+                    // known error i.e. when error was sent by the node server
                     props.setErrorData({
-                        error: "API limit exceeded, please try again later",
-                        message: `Error message:${parsedData.message}`,
+                        error: parsedData.error,
+                        message: parsedData.message,
                     });
                 } else {
-                    props.setProgress(70);
+                    props.setErrorData({
+                        error: "An unexpected error occured, please try again later",
+                        message: "",
+                    });
+                }
+            } else {
+                props.setProgress(70);
 
-                    setArticles(parsedData.articles);
-                    setTotalResults(parsedData.totalResults);
-                    setLoading(false);
-                    setPage(1);
-                    props.setProgress(100);
+                setArticles(parsedData.articles);
+                setTotalResults(parsedData.totalResults);
+                setLoading(false);
+                setPage(1);
+                // props.setProgress(100);
 
-                    if (parsedData.articles.length === 0) {
-                        props.setErrorData({
-                            error: "Sorry, no results found!",
-                            message: `Please check the spelling or try searching for something else`,
-                        });
-                    } else if (Object.keys(props.errorData).length !== 0) {
-                        // if the error has been resolved, old error value will be reset to empty object (no error)
-                        props.setErrorData({});
-                    }
+                if (parsedData.articles.length === 0) {
+                    props.setErrorData({
+                        error: "Sorry, no results found!",
+                        message: `Please check the spelling or try searching for something else`,
+                    });
+                } else if (Object.keys(props.errorData).length !== 0) {
+                    // if the error has been resolved, old error value will be reset to empty object (no error)
+                    props.setErrorData({});
                 }
             }
         } catch (err) {
@@ -83,6 +95,59 @@ export default function News(props) {
         }
         // setIsFetching(false);
         props.setProgress(100);
+    };
+
+    const fetchMoreData = async () => {
+        const url = "http://localhost:5000/api/v1/news/fetchnews";
+        const body = {
+            category: props.category,
+            country: props.country,
+            APIKey: props.APIKey,
+            page: page + 1,
+            pageSize: props.pageSize,
+        };
+        if (debouncedSearchQuery.length !== 0) {
+            body.searchQuery = debouncedSearchQuery;
+        }
+        try {
+            const data = await fetch(url, {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(body),
+            });
+
+            const parsedData = await data.json();
+
+            // if error
+            if (data.status !== 200) {
+                if (parsedData.error) {
+                    // known error i.e. when error was sent by the node server
+                    props.setErrorData({
+                        error: parsedData.error,
+                        message: parsedData.message,
+                    });
+                } else {
+                    props.setErrorData({
+                        error: "An unexpected error occured, please try again later",
+                        message: "",
+                    });
+                }
+            } else {
+                setArticles(articles.concat(parsedData.articles));
+                setTotalResults(parsedData.totalResults);
+                setLoading(false);
+                setPage(page + 1);
+                setNewPageLength(parsedData.articles.length);
+            }
+        } catch (err) {
+            props.setErrorData({
+                error: "Connection Error!!!",
+                message: `Check your internet connection and try again`,
+            });
+        }
     };
 
     useEffect(() => {
@@ -104,46 +169,6 @@ export default function News(props) {
         setFirstRun(false);
     }, [debouncedSearchQuery, props.country]);
 
-    const fetchMoreData = async () => {
-        let url = `https://newsapi.org/v2/top-headlines?country=${
-            props.country
-        }&category=${props.category}&apiKey=${props.APIKey}&page=${
-            page + 1
-        }&pageSize=${props.pageSize}`;
-        url =
-            debouncedSearchQuery === ""
-                ? url
-                : `${url}&q=${debouncedSearchQuery}`;
-
-        try {
-            let data = await fetch(url);
-            if (data.status !== 200) {
-                props.setErrorData({
-                    error: "An unexpected error occured, please try again later",
-                    message: "",
-                });
-            } else {
-                let parsedData = await data.json();
-                if (parsedData.status === "error") {
-                    props.setErrorData({
-                        error: "API limit exceeded, please try again later",
-                        message: `Error message:${parsedData.message}`,
-                    });
-                } else {
-                    setArticles(articles.concat(parsedData.articles));
-                    setTotalResults(parsedData.totalResults);
-                    setLoading(false);
-                    setPage(page + 1);
-                    setNewPageLength(parsedData.articles.length);
-                }
-            }
-        } catch (err) {
-            props.setErrorData({
-                error: "Connection Error!!!",
-                message: `Check your internet connection and try again`,
-            });
-        }
-    };
     return (
         <>
             {/* {!isFetching && articles.length === 0 ? (
