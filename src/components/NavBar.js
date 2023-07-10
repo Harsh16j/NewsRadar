@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
@@ -16,6 +16,8 @@ export default function NavBar({
     selectedCountryIndex,
     setSelectedCountryIndex,
 }) {
+    const [expanded, setExpanded] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(true);
     return (
         <Navbar
             expand="lg"
@@ -25,6 +27,14 @@ export default function NavBar({
             style={{ backgroundColor: "#00898A" }}
             // bg="#00898A"
             data-bs-theme="dark"
+            // expanded prop specifies if the navbar will be in expanded state or not
+            // onToggle function will called everytime the the navbar will be either expanded or collapsed
+            expanded={expanded}
+            onToggle={() => {
+                setExpanded((expanded) => {
+                    return !expanded;
+                });
+            }}
         >
             {/* <Container style={{ width: "100%" }}> - No need as it centers the navbar*/}
             <Container fluid>
@@ -51,21 +61,27 @@ export default function NavBar({
                     >
                         {/* <Nav.Link href="/home">Home</Nav.Link>
           <Nav.Link href="/link">About </Nav.Link> */}
-                        {/* In place of the above tag from bootstrap, nav-link is used as the classname to inherit all the CSS properties from bootstrap */}
+                        {/*Old way: In place of the above tag from bootstrap, nav-link is used as the classname to inherit all the CSS properties from bootstrap */}
+                        {/* New way: https://stackoverflow.com/questions/54843302/reactjs-bootstrap-navbar-and-routing-not-working-together */}
                         {categories.map((category) => {
                             return (
-                                <Link
-                                    className="nav-link"
+                                <Nav.Link
+                                    as={Link}
                                     key={category}
                                     to={
                                         category === "general"
                                             ? "/"
                                             : `/${category}`
                                     }
+                                    onClick={() => {
+                                        if (expanded) {
+                                            setExpanded(false);
+                                        }
+                                    }}
                                 >
                                     {category.charAt(0).toUpperCase() +
                                         category.slice(1)}
-                                </Link>
+                                </Nav.Link>
                             );
                         })}
                     </Nav>
