@@ -29,7 +29,9 @@ export default function News(props) {
     const updateNews = async () => {
         props.setProgress(10);
 
-        const url = "http://localhost:5000/api/v1/news/fetchnews";
+        // const url = "http://localhost:5000/api/v1/news/fetchnews";
+        const url = "https://news-radar.onrender.com/api/v1/news/fetchnews";
+
         const body = {
             category: props.category,
             country: props.country,
@@ -98,7 +100,8 @@ export default function News(props) {
     };
 
     const fetchMoreData = async () => {
-        const url = "http://localhost:5000/api/v1/news/fetchnews";
+        // const url = "http://localhost:5000/api/v1/news/fetchnews";
+        const url = "https://news-radar.onrender.com/api/v1/news/fetchnews";
         const body = {
             category: props.category,
             country: props.country,
