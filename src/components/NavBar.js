@@ -111,7 +111,7 @@ export default function NavBar({
 
                             <Dropdown.Menu
                                 style={{
-                                    marginTop: "8px", // 8px is the exact gap between selectCountry box and navbar bottom edge
+                                    marginTop: "14.111px", // 14.111px is the exact gap between selectCountry box and navbar bottom edge
                                     height: "300px",
                                     overflowY: "auto",
                                 }}
