@@ -22,16 +22,14 @@ https://github.com/Harsh16j/NewsRadar-Backend<br/>
 
 ## Technologies Used
 
-- React.js
-- Node.js
+- React.js (node-v16.14.0-x64)
+- Node.js  (node-v18.16.1-x64)
 - Express.js
 - Bootstrap
 - NewsAPI
 - Git
 - Netlify
 - Render
-
-Note: Node version used for the project: node-v16.14.0-x64
 
 # Getting Started with Create React App
 
